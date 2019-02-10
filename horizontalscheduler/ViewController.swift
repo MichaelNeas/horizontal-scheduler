@@ -43,6 +43,17 @@ class ViewController: UIViewController {
             let space = UIView(frame: CGRect(x: rndX, y: rndY, width: rndWidth, height: 100))
             space.backgroundColor = UIColor(hue: CGFloat(drand48()), saturation: 1, brightness: 1, alpha: 1)
             scrollView.addSubview(space)
+            
+            let gesture = UIPanGestureRecognizer(target: self, action: #selector(ViewController.wasDragged(_:)))
+            space.addGestureRecognizer(gesture)
         }
     }
+    
+    @objc func wasDragged(_ gesture: UIPanGestureRecognizer) {
+        guard let gestureView =  gesture.view else { return }
+        let translation = gesture.translation(in: self.view)
+        gestureView.center = CGPoint(x: gestureView.center.x + translation.x, y: gestureView.center.y + translation.y)
+        gesture.setTranslation(CGPoint.zero, in: self.view)
+    }
+    
 }
